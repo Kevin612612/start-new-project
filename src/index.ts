@@ -13,6 +13,11 @@ app.use(jsonBodyMiddleware)
 
 const port = process.env.PORT || 5000
 
+type ErrorType = {
+    message: string | null;
+    field: string | null;
+}
+
 let videos = [{
     id: 0,
     title: "title",
@@ -47,16 +52,20 @@ app.post('/videos', (req: Request, res: Response) => {
     let title = req.body.title
     let author = req.body.author
     let availableResolutions = req.body.availableResolutions
+    let arrayOfErrors = new Array<ErrorType>();
+    const errors = {errorsMessages: arrayOfErrors}
+    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
+        arrayOfErrors.push({message: "Incorrect title", field: "Send correct title"})
+    }
+    if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
+        arrayOfErrors.push({message: "Incorrect author", field: "Send correct author"})
+    }
+    if (availableResolutions.legth <= 1) {
+        arrayOfErrors.push({message: "Incorrect availableResolutions", field: "Send correct availableResolutions"})
+    }
 
-    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40 ||
-        !author || typeof author !== 'string' || !author.trim() || author.length > 20 ||
-        availableResolutions.legth <= 1) {
-        res.status(400).send({
-            errorsMessages: [{
-                "message": "Incorrect title",
-                "field": "Send correct video"
-            }]
-        })
+    if (arrayOfErrors.length >= 1) {
+        res.status(400).send(errors)
         return;
     }
 
@@ -97,10 +106,10 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
         availableResolutions.legth <= 1 || typeof canBeDownloaded !== "boolean" ||
         minAgeRestriction < 1 || minAgeRestriction > 18 || typeof publicationDate !== "string") {
         res.status(400).send({
-            errorsMessages: [{
-                "message": "Incorrect title",
-                "field": "Send correct video"
-            }]
+            errorsMessages: {
+                message: "Incorrect title",
+                field: "Send correct video"
+            }
         })
         return;
     }

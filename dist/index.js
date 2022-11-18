@@ -41,15 +41,19 @@ app.post('/videos', (req, res) => {
     let title = req.body.title;
     let author = req.body.author;
     let availableResolutions = req.body.availableResolutions;
-    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40 ||
-        !author || typeof author !== 'string' || !author.trim() || author.length > 20 ||
-        availableResolutions.legth <= 1) {
-        res.status(400).send({
-            errorsMessages: [{
-                    "message": "Incorrect title",
-                    "field": "Send correct video"
-                }]
-        });
+    let arrayOfErrors = new Array();
+    const errors = { errorsMessages: arrayOfErrors };
+    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
+        arrayOfErrors.push({ message: "Incorrect title", field: "Send correct title" });
+    }
+    if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
+        arrayOfErrors.push({ message: "Incorrect author", field: "Send correct author" });
+    }
+    if (availableResolutions.legth <= 1) {
+        arrayOfErrors.push({ message: "Incorrect availableResolutions", field: "Send correct availableResolutions" });
+    }
+    if (arrayOfErrors.length >= 1) {
+        res.status(400).send(errors);
         return;
     }
     const newVideo = {
@@ -87,10 +91,10 @@ app.put('/videos/:videoId', (req, res) => {
         availableResolutions.legth <= 1 || typeof canBeDownloaded !== "boolean" ||
         minAgeRestriction < 1 || minAgeRestriction > 18 || typeof publicationDate !== "string") {
         res.status(400).send({
-            errorsMessages: [{
-                    "message": "Incorrect title",
-                    "field": "Send correct video"
-                }]
+            errorsMessages: {
+                message: "Incorrect title",
+                field: "Send correct video"
+            }
         });
         return;
     }
