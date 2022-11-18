@@ -1,7 +1,7 @@
 import express, {Request, Response} from "express"
 import bodyParser from "body-parser"
 import cors from 'cors'
-import {isFloat32Array, isInt32Array} from "util/types";
+
 
 // create express app
 const app = express()
@@ -32,8 +32,6 @@ let videos = [{
     publicationDate: "2022-11-19T08:06:01.781Z",
     availableResolutions: ["P144"]
 }]
-// const products = [{id: 1, title: "tomato"}, {id: 2, title: 'orange'}]
-// const addresses = [{id: 1, value: 'Nezalezhnasti 12'}, {id: 2, value: "Selickaga 11"}]
 
 let countOfPost = 0
 
