@@ -53,16 +53,30 @@ app.post('/videos', (req: Request, res: Response) => {
     countOfPost++
     let title = req.body.title
     let author = req.body.author
-    let availableResolutions = req.body.availableResolutions
+    // let availableResolutions: Array<string> = []
+    // for (let i = 0; i < req.body.availableResolutions.length; i++) {
+    //     availableResolutions.push(req.body.availableResolutions[i])
+    // }
+    let availableResolutions: Array<string> = req.body.availableResolutions
+
+
     let arrayOfErrors = new Array<ErrorType>();
     const errors: arrayMes = {errorsMessages: arrayOfErrors}
+
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
         arrayOfErrors.push({message: "Incorrect title", field: "title"})
     }
     if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
         arrayOfErrors.push({message: "Incorrect author", field: "author"})
     }
-    if (availableResolutions.legth <= 1) {
+    // само значение, оно должно входить в массив [ "P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160" ]
+    for (let i = 0; i < availableResolutions.length; i++) {
+        if (["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"].indexOf(availableResolutions[i]) == -1) {
+            arrayOfErrors.push({message: "Incorrect availableResolutions", field: "availableResolutions"})
+        }
+    }
+
+    if (availableResolutions.length <= 1) {
         arrayOfErrors.push({message: "Incorrect availableResolutions", field: "availableResolutions"})
     }
 

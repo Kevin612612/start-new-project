@@ -38,6 +38,10 @@ app.post('/videos', (req, res) => {
     countOfPost++;
     let title = req.body.title;
     let author = req.body.author;
+    // let availableResolutions: Array<string> = []
+    // for (let i = 0; i < req.body.availableResolutions.length; i++) {
+    //     availableResolutions.push(req.body.availableResolutions[i])
+    // }
     let availableResolutions = req.body.availableResolutions;
     let arrayOfErrors = new Array();
     const errors = { errorsMessages: arrayOfErrors };
@@ -47,7 +51,13 @@ app.post('/videos', (req, res) => {
     if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
         arrayOfErrors.push({ message: "Incorrect author", field: "author" });
     }
-    if (availableResolutions.legth <= 1) {
+    // само значение, оно должно входить в массив [ "P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160" ]
+    for (let i = 0; i < availableResolutions.length; i++) {
+        if (["P144", "P240", "P360", "P480", "P720", "P1080", "P1440", "P2160"].indexOf(availableResolutions[i]) == -1) {
+            arrayOfErrors.push({ message: "Incorrect availableResolutions", field: "availableResolutions" });
+        }
+    }
+    if (availableResolutions.length <= 1) {
         arrayOfErrors.push({ message: "Incorrect availableResolutions", field: "availableResolutions" });
     }
     if (arrayOfErrors.length >= 1) {
