@@ -31,6 +31,16 @@ let videos = [{
     createdAt: "2022-11-18T08:06:01.781Z",
     publicationDate: "2022-11-19T08:06:01.781Z",
     availableResolutions: ["P144"]
+},
+    {
+    id: 0,
+    title: "title",
+    author: "author",
+    canBeDownloaded: false,
+    minAgeRestriction: null,
+    createdAt: "2022-11-18T08:06:01.781Z",
+    publicationDate: "2022-11-19T08:06:01.781Z",
+    availableResolutions: ["P144"]
 }]
 
 let countOfPost = 0
@@ -53,12 +63,7 @@ app.post('/videos', (req: Request, res: Response) => {
     countOfPost++
     let title = req.body.title
     let author = req.body.author
-    // let availableResolutions: Array<string> = []
-    // for (let i = 0; i < req.body.availableResolutions.length; i++) {
-    //     availableResolutions.push(req.body.availableResolutions[i])
-    // }
     let availableResolutions: Array<string> = req.body.availableResolutions
-
 
     let arrayOfErrors = new Array<ErrorType>();
     const errors: arrayMes = {errorsMessages: arrayOfErrors}
@@ -76,7 +81,7 @@ app.post('/videos', (req: Request, res: Response) => {
         }
     }
 
-    if (availableResolutions.length <= 1) {
+    if (availableResolutions.length < 1) {
         arrayOfErrors.push({message: "Incorrect availableResolutions", field: "availableResolutions"})
     }
 
@@ -117,16 +122,36 @@ app.put('/videos/:videoId', (req: Request, res: Response) => {
     let canBeDownloaded = req.body.canBeDownloaded
     let minAgeRestriction = req.body.minAgeRestriction
     let publicationDate = req.body.publicationDate
-    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40 ||
-        !author || typeof author !== 'string' || !author.trim() || author.length > 20 ||
-        availableResolutions.legth <= 1 || typeof canBeDownloaded !== "boolean" ||
-        minAgeRestriction < 1 || minAgeRestriction > 18 || typeof publicationDate !== "string") {
-        res.status(400).send({
-            errorsMessages: {
-                message: "Incorrect title",
-                field: "Send correct video"
-            }
-        })
+
+    let arrayOfErrors = new Array<ErrorType>();
+    const errors: arrayMes = {errorsMessages: arrayOfErrors}
+
+    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
+        arrayOfErrors.push({message: "Incorrect title", field: "title"})
+    }
+
+    if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
+        arrayOfErrors.push({message: "Incorrect author", field: "author"})
+    }
+
+    if (availableResolutions.length < 1) {
+        arrayOfErrors.push({message: "Incorrect availableResolutions", field: "availableResolutions"})
+    }
+
+    if (typeof canBeDownloaded !== "boolean") {
+        arrayOfErrors.push({message: "Incorrect canBeDownloaded", field: "canBeDownloaded"})
+    }
+
+    if (minAgeRestriction < 1 || minAgeRestriction > 18 || typeof minAgeRestriction !== "number") {
+        arrayOfErrors.push({message: "Incorrect minAgeRestriction", field: "minAgeRestriction"})
+    }
+
+    if (typeof publicationDate !== "string") {
+        arrayOfErrors.push({message: "Incorrect publicationDate", field: "publicationDate"})
+    }
+
+    if (arrayOfErrors.length >= 1) {
+        res.status(400).send(errors)
         return;
     }
 
