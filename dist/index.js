@@ -57,7 +57,7 @@ app.post('/videos', (req, res) => {
             arrayOfErrors.push({ message: "Incorrect availableResolutions", field: "availableResolutions" });
         }
     }
-    if (availableResolutions.length <= 1) {
+    if (availableResolutions.length < 1) {
         arrayOfErrors.push({ message: "Incorrect availableResolutions", field: "availableResolutions" });
     }
     if (arrayOfErrors.length >= 1) {
