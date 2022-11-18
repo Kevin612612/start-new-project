@@ -1,6 +1,7 @@
 import express, {Request, Response} from "express"
 import bodyParser from "body-parser"
 import cors from 'cors'
+import {isFloat32Array, isInt32Array} from "util/types";
 
 // create express app
 const app = express()
@@ -13,43 +14,64 @@ app.use(jsonBodyMiddleware)
 const port = process.env.PORT || 5000
 
 let videos = [{
-    id: 1,
-    title: 'title',
-    author: 'it-incubator.eu'
+    id: 0,
+    title: "title",
+    author: "author",
+    canBeDownloaded: false,
+    minAgeRestriction: null,
+    createdAt: "2022-11-18T08:06:01.781Z",
+    publicationDate: "2022-11-19T08:06:01.781Z",
+    availableResolutions: ["P144"]
 }]
 // const products = [{id: 1, title: "tomato"}, {id: 2, title: 'orange'}]
 // const addresses = [{id: 1, value: 'Nezalezhnasti 12'}, {id: 2, value: "Selickaga 11"}]
 
+let countOfPost = 0
 
 app.get('/', (req: Request, res: Response) => {
     res.send("Hello IT-INCUBATOR.EU???")
 })
 
 
+app.delete('/testing/all-data', (req: Request, res: Response) => {
+    videos.splice(0)
+    res.send(204)
+})
+
 app.get('/videos', (req: Request, res: Response) => {
     res.send(videos)
 })
 
 app.post('/videos', (req: Request, res: Response) => {
+    countOfPost++
     let title = req.body.title
-    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
+    let author = req.body.author
+    let availableResolutions = req.body.availableResolutions
+
+    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40 ||
+        !author || typeof author !== 'string' || !author.trim() || author.length > 20 ||
+        availableResolutions.legth <= 1) {
         res.status(400).send({
             errorsMessages: [{
                 "message": "Incorrect title",
                 "field": "Send correct video"
-            }],
-            resultCode: 1
+            }]
         })
         return;
     }
 
     const newVideo = {
-        id: +(new Date()),
+        id: countOfPost,
         title: title,
-        author: 'it-incubator.eu'
+        author: author,
+        canBeDownloaded: false,
+        minAgeRestriction: null,
+        createdAt: "2022-11-18T08:06:01.781Z",
+        publicationDate: "2022-11-19T08:06:01.781Z",
+        availableResolutions: availableResolutions
     }
-    videos.push(newVideo)
 
+    videos.push(newVideo)
     res.status(201).send(newVideo)
 })
 
@@ -65,21 +87,34 @@ app.get('/videos/:videoId', (req: Request, res: Response) => {
 
 app.put('/videos/:videoId', (req: Request, res: Response) => {
     let title = req.body.title
-    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
+    let author = req.body.author
+    let availableResolutions = req.body.availableResolutions
+    let canBeDownloaded = req.body.canBeDownloaded
+    let minAgeRestriction = req.body.minAgeRestriction
+    let publicationDate = req.body.publicationDate
+    if (!title || typeof title !== 'string' || !title.trim() || title.length > 40 ||
+        !author || typeof author !== 'string' || !author.trim() || author.length > 20 ||
+        availableResolutions.legth <= 1 || typeof canBeDownloaded !== "boolean" ||
+        minAgeRestriction < 1 || minAgeRestriction > 18 || typeof publicationDate !== "string") {
         res.status(400).send({
             errorsMessages: [{
                 "message": "Incorrect title",
-                "field": "title"
-            }],
-            resultCode: 1
+                "field": "Send correct video"
+            }]
         })
         return;
     }
 
     const id = +req.params.videoId;
     const video = videos.find(v => v.id === id)
+
     if (video) {
         video.title = title;
+        video.author = author;
+        video.availableResolutions = availableResolutions;
+        video.canBeDownloaded = canBeDownloaded;
+        video.minAgeRestriction = minAgeRestriction;
+        video.publicationDate = publicationDate;
         res.status(204).send(video)
     } else {
         res.send(404)
@@ -97,56 +132,6 @@ app.delete('/videos/:videoId', (req: Request, res: Response) => {
     }
 })
 
-// app.get('/products', (req: Request, res: Response) => {
-//     if (req.query.title) {
-//         let searchString = req.query.title.toString()
-//         res.send(products.filter(p=> p.title.indexOf(searchString) > -1))
-//     } else {
-//         res.send(products)
-//     }
-// })
-//
-// app.post('/products', (req: Request, res: Response) => {
-//     const newProduct = {
-//         id: 7,
-//         title: req.body.title
-//     }
-//     products.push(newProduct)
-//     res.status(201).send(newProduct)
-// })
-//
-// app.get('/products/:id', (req: Request, res: Response) => {
-//     let product = products.find(p=> p.id === +req.params.id)
-//     if (product) {
-//         res.send(product)
-//     } else {
-//         res.send(404)
-//     }
-// })
-//
-// app.delete('/products/:id', (req: Request, res: Response) => {
-//     for (let i = 0; i < products.length; i++) {
-//         if (products[i].id === +req.params.id) {
-//             products.splice(i, 1)
-//             res.send(201)
-//             return;
-//         }
-//     }
-//     res.send(404)
-// })
-//
-// app.get('/addresses', (req: Request, res: Response) => {
-//     res.send(addresses)
-// })
-//
-// app.get('/addresses/:id', (req: Request, res: Response) => {
-//     let address = addresses.find(p=> p.id === +req.params.id)
-//     if (address) {
-//         res.send(address)
-//     } else {
-//         res.send(404)
-//     }
-// })
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
