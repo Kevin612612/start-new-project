@@ -44,7 +44,7 @@ app.post('/videos', (req, res) => {
     let arrayOfErrors = new Array();
     const errors = { errorsMessages: arrayOfErrors };
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
-        arrayOfErrors.push({ message: "Incorrect title", field: "Send correct title" });
+        arrayOfErrors.push({ message: "Incorrect title", field: "title" });
     }
     if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
         arrayOfErrors.push({ message: "Incorrect author", field: "Send correct author" });

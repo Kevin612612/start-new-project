@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="3096622b-b0d0-4137-9731-7ed86f0e203d" name="Changes" comment="commit 1">
+    <list default="true" id="3096622b-b0d0-4137-9731-7ed86f0e203d" name="Changes" comment="commit 3">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dist/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/dist/index.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/index.ts" beforeDir="false" afterPath="$PROJECT_DIR$/src/index.ts" afterDir="false" />
@@ -93,7 +93,7 @@
       <workItem from="1668509980008" duration="135000" />
       <workItem from="1668510289335" duration="24900000" />
       <workItem from="1668687982017" duration="6970000" />
-      <workItem from="1668758513573" duration="14392000" />
+      <workItem from="1668758513573" duration="15772000" />
     </task>
     <task id="LOCAL-00001" summary="add vercel.json">
       <created>1668699513140</created>
@@ -130,7 +130,28 @@
       <option name="project" value="LOCAL" />
       <updated>1668766393719</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="commit 1">
+      <created>1668773248522</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1668773248522</updated>
+    </task>
+    <task id="LOCAL-00007" summary="commit 2">
+      <created>1668773309860</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1668773309860</updated>
+    </task>
+    <task id="LOCAL-00008" summary="commit 3">
+      <created>1668773360876</created>
+      <option name="number" value="00008" />
+      <option name="presentableId" value="LOCAL-00008" />
+      <option name="project" value="LOCAL" />
+      <updated>1668773360876</updated>
+    </task>
+    <option name="localTasksCounter" value="9" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -155,6 +176,8 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="add vercel.json" />
     <MESSAGE value="commit 1" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit 1" />
+    <MESSAGE value="commit 2" />
+    <MESSAGE value="commit 3" />
+    <option name="LAST_COMMIT_MESSAGE" value="commit 3" />
   </component>
 </project>

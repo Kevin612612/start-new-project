@@ -18,6 +18,10 @@ type ErrorType = {
     field: string | null;
 }
 
+type arrayMes = {
+    errorsMessages: Array<any>
+}
+
 let videos = [{
     id: 0,
     title: "title",
@@ -53,9 +57,9 @@ app.post('/videos', (req: Request, res: Response) => {
     let author = req.body.author
     let availableResolutions = req.body.availableResolutions
     let arrayOfErrors = new Array<ErrorType>();
-    const errors = {errorsMessages: arrayOfErrors}
+    const errors: arrayMes = {errorsMessages: arrayOfErrors}
     if (!title || typeof title !== 'string' || !title.trim() || title.length > 40) {
-        arrayOfErrors.push({message: "Incorrect title", field: "Send correct title"})
+        arrayOfErrors.push({message: "Incorrect title", field: "title"})
     }
     if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
         arrayOfErrors.push({message: "Incorrect author", field: "Send correct author"})
