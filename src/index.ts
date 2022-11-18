@@ -62,10 +62,10 @@ app.post('/videos', (req: Request, res: Response) => {
         arrayOfErrors.push({message: "Incorrect title", field: "title"})
     }
     if (!author || typeof author !== 'string' || !author.trim() || author.length > 20) {
-        arrayOfErrors.push({message: "Incorrect author", field: "Send correct author"})
+        arrayOfErrors.push({message: "Incorrect author", field: "author"})
     }
     if (availableResolutions.legth <= 1) {
-        arrayOfErrors.push({message: "Incorrect availableResolutions", field: "Send correct availableResolutions"})
+        arrayOfErrors.push({message: "Incorrect availableResolutions", field: "availableResolutions"})
     }
 
     if (arrayOfErrors.length >= 1) {
